@@ -6,13 +6,13 @@
 
 Opt('WinTitleMatchMode', 3)
 
-AdlibRegister('_EXIT', 1)
+$exe = 'dc.exe'
+If Not FileExists($exe) Then InetGet('https://github.com/ssokka/Windows/raw/master/tools/dc.exe', $exe, 1)
+RunWait($exe & ' -monitor="\\.\DISPLAY1" -depth=max -refresh=max -width=1280 -height=1024')
+
+AdlibRegister('_EXIT', 25)
 
 While 1
-
-	$exe = 'dc.exe'
-	If Not FileExists($exe) Then InetGet('https://github.com/ssokka/Windows/raw/master/tools/dc.exe', $exe, 1)
-	RunWait($exe & ' -monitor="\\.\DISPLAY1" -depth=max -refresh=max -width=1280 -height=1024')
 
 	$x = 0
 	_OCCIC('Chrome')
