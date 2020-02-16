@@ -1,6 +1,7 @@
 ; [오라클-클라우드] 인스턴스 생성 자동 클릭 스크립트 : https://sjva.me/bbs/board.php?bo_table=tip&wr_id=251
 ; 반드시 위 사이트 확인 후 실행하시기 바랍니다.
 ; 오라클 클라우드 로그인 : https://www.oracle.com/cloud/sign-in.html
+
 #include <Misc.au3>
 
 Opt('WinTitleMatchMode', 3)
@@ -30,17 +31,21 @@ While 1
 WEnd
 
 Func _OCCIC($_wb)
+
 	Local $_w = 825, $_h = 991
+
 	If $_wb = 'Chrome' Then $x = -7
 	If $_wb = 'Whale' Then
 		$_w -= 14
 		$_h -= 7
 	EndIf
+
 	$_cn = 'Chrome_RenderWidgetHostHWND1'
 	If $_wb = 'Slimjet' Then $_cn = 'Slimjet_RenderWidgetHostHWND1'
 	If $_wb Then $_wb = ' - ' & $_wb
 	$_hd = WinGetHandle('Oracle Cloud Infrastructure' & $_wb)
 	If @error Then Return
+
 	WinSetState($_hd, '', @SW_RESTORE)
 	Sleep(250)
 	WinMove($_hd, '', $x, 0, $_w, $_h, 1)
@@ -57,8 +62,10 @@ Func _OCCIC($_wb)
 	Sleep(500)
 	ControlClick($_hd, '', $_cn, 'left', 1, 50, 845) ; 생성
 	Sleep(500)
+
 	If $x = -7 Then $x = 0
 	$x += 100
+
 EndFunc
 
 Func _EXIT()
