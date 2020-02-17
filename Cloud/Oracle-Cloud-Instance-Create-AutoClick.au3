@@ -85,20 +85,20 @@ Func _OCICAC($_wbn)
 	_ToolTip($_text)
 	Sleep(500)
 
-	; coordinate click 계속 작업
+	; click coordinate 계속 작업
 	$_check = ControlClick($_whd, '', $_cn, 'left', 1, 160, 182)
 	$_text &= @CRLF & 'ContinueClick ' & $_check
 	_ToolTip($_text)
 	Sleep(500)
 
-	; coordinate click 생성
+	; click coordinate 생성
 	$_check = ControlClick($_whd, '', $_cn, 'left', 1, 50, 845)
 	$_text &= @CRLF & 'CreateClick ' & $_check
 	_ToolTip($_text)
 	_Console($_time & ' ' & StringReplace($_text, $_wbs, $_wbs & '  ' & @TAB))
 	Sleep(500)
 
-	; next coordinate web browser
+	; set next coordinate web browser
 	If $x = -7 Then $x = 0
 	$x += 100
 EndFunc
