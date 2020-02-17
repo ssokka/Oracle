@@ -6,7 +6,7 @@ Opt('WinTitleMatchMode', 3)
 
 ; 단축키
 $paused = False
-HotKeySet('{PAUSE}', '_HotKey')		; 스크립트 일시중지/시작 단축키
+HotKeySet('{PAUSE}', '_HotKey')		; 스크립트 일시 중지 / 다시 시작 단축키
 HotKeySet('!{PAUSE}', '_HotKey')	; 스크립트 종료 단축키
 
 While 1
