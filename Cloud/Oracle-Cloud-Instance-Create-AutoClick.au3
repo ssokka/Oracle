@@ -8,8 +8,6 @@ $paused = False
 HotKeySet('{PAUSE}', '_HotKey')		; 스크립트 일시중지/시작 단축키
 HotKeySet('!{PAUSE}', '_HotKey')	; 스크립트 종료 단축키
 
-$MoveTop = 1
-
 While 1
 	$x = 0
 	_OCCIC('Chrome')
@@ -23,7 +21,6 @@ While 1
 		Sleep(1000)
 		$i -= 1
 	WEnd
-	$MoveTop = 0
 WEnd
 
 Func _OCCIC($_wbn)
@@ -71,16 +68,14 @@ Func _OCCIC($_wbn)
 	_ToolTip($_text)
 	Sleep(250)
 
-	If $MoveTop Then
-		$_check = 0
-		$_check1 = ControlClick($_whd, '', $_cn, 'left', 1, 5, 400)
-		Sleep(250)
-		$_check2 = ControlSend($_whd, '', $_cn, '{HOME}')
-		If $_check1 And $_check2 Then $_check = 1
-		$_text &= @CRLF & 'MoveTop ' & $_check
-		_ToolTip($_text)
-		Sleep(500)
-	EndIf
+	$_check = 0
+	$_check1 = ControlClick($_whd, '', $_cn, 'left', 1, 5, 400)
+	Sleep(100)
+	$_check2 = ControlSend($_whd, '', $_cn, '{HOME}')
+	If $_check1 And $_check2 Then $_check = 1
+	$_text &= @CRLF & 'MoveTop ' & $_check
+	_ToolTip($_text)
+	Sleep(500)
 
 	$_check = ControlClick($_whd, '', $_cn, 'left', 1, 160, 182) ; 세션 만료 - 계속 작업
 	$_text &= @CRLF & 'ContinueClick ' & $_check
