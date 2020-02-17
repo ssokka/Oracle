@@ -1,19 +1,20 @@
 ; [필독] 오라클 클라우드 인스턴스 생성 자동 클릭 스크립트 : https://sjva.me/bbs/board.php?bo_table=tip&wr_id=251
-; [참고] 오라클 클라우드 완전히 분리된 인스턴스 생성 : https://sjva.me/bbs/board.php?bo_table=tip&wr_id=253
+; [참고] 오라클 클라우드 인스턴스 생성 (완전 분리형) : https://sjva.me/bbs/board.php?bo_table=tip&wr_id=253
 ; [링크] 오라클 클라우드 로그인 : https://www.oracle.com/cloud/sign-in.html
 
 Opt('WinTitleMatchMode', 3)
 
+; 단축키
 $paused = False
 HotKeySet('{PAUSE}', '_HotKey')		; 스크립트 일시중지/시작 단축키
 HotKeySet('!{PAUSE}', '_HotKey')	; 스크립트 종료 단축키
 
 While 1
 	$x = 0
-	_OCCIC('Chrome')
-	_OCCIC('Whale')
-	_OCCIC('Edge')
-	_OCCIC('Slimjet')
+	_OCICAC('Chrome')
+	_OCICAC('Whale')
+	_OCICAC('Edge')
+	_OCICAC('Slimjet')
 	$i = 8
 	While 1
 		_ToolTip('Wait ' & $i)
@@ -23,7 +24,7 @@ While 1
 	WEnd
 WEnd
 
-Func _OCCIC($_wbn)
+Func _OCICAC($_wbn)
 	Local $_wbt = ' - ' & $_wbn, $_w = 825, $_h = 991
 
 	If $_wbn = 'Edge' Then $_wbt = ''
@@ -33,19 +34,23 @@ Func _OCCIC($_wbn)
 		$_h -= 7
 	EndIf
 
+	; set control class
 	$_cn = 'Chrome_RenderWidgetHostHWND1'
 	If $_wbn = 'Slimjet' Then $_cn = 'Slimjet_RenderWidgetHostHWND1'
 
+	; get web browser handle
 	$_whd = WinGetHandle('Oracle Cloud Infrastructure' & $_wbt)
 	If @error Then Return
 
 	_Resolution()
 
+	; set tooltip text
 	$_time = '[' & @YEAR & '-' & @MON & '-' & @MDAY & ' ' & @HOUR & ':' & @MIN & ':' & @SEC & ':' & @MSEC & ']'
 	$_wbs = $_wbn & ' 1'
 	$_text = $_wbs
 	_ToolTip($_text)
 
+	; undoes web browser maximization
 	If BitAND(WinGetState($_whd), 32) Then
 		$_check = WinSetState($_whd, '', @SW_RESTORE)
 		$_text &= @CRLF & 'WinSetState ' & $_check
@@ -53,6 +58,7 @@ Func _OCCIC($_wbn)
 		Sleep(250)
 	EndIf
 
+	; resizes web browser
 	$_wpos = WinGetPos($_whd)
 	If $_wpos[2] <> $_w And $_wpos[3] <> $_h Then
 		$_check = WinMove($_whd, '', $x, 0, $_w, $_h, 1)
@@ -62,12 +68,14 @@ Func _OCCIC($_wbn)
 		Sleep(250)
 	EndIf
 
+	; activate web browser
 	$_check = WinActivate($_whd)
 	If $_check Then $_check = 1
 	$_text &= @CRLF & 'WinActivate ' & $_check
 	_ToolTip($_text)
 	Sleep(250)
 
+	; move top web page
 	$_check = 0
 	$_check1 = ControlClick($_whd, '', $_cn, 'left', 1, 5, 400)
 	Sleep(100)
@@ -77,17 +85,20 @@ Func _OCCIC($_wbn)
 	_ToolTip($_text)
 	Sleep(500)
 
-	$_check = ControlClick($_whd, '', $_cn, 'left', 1, 160, 182) ; 세션 만료 - 계속 작업
+	; coordinate click 계속 작업
+	$_check = ControlClick($_whd, '', $_cn, 'left', 1, 160, 182)
 	$_text &= @CRLF & 'ContinueClick ' & $_check
 	_ToolTip($_text)
 	Sleep(500)
 
-	$_check = ControlClick($_whd, '', $_cn, 'left', 1, 50, 845) ; 생성
+	; coordinate click 생성
+	$_check = ControlClick($_whd, '', $_cn, 'left', 1, 50, 845)
 	$_text &= @CRLF & 'CreateClick ' & $_check
 	_ToolTip($_text)
 	_Console($_time & ' ' & StringReplace($_text, $_wbs, $_wbs & '  ' & @TAB))
 	Sleep(500)
 
+	; next coordinate web browser
 	If $x = -7 Then $x = 0
 	$x += 100
 EndFunc
