@@ -49,9 +49,6 @@ Func _OCICAC($_wbn)
 	$_text = $_wbs
 	_ToolTip($_text)
 
-	; disable mouse and keyboard
-	BlockInput(1)
-
 	; undoes web browser maximization
 	If BitAND(WinGetState($_whd), 32) Then
 		$_check = WinSetState($_whd, '', @SW_RESTORE)
@@ -100,9 +97,6 @@ Func _OCICAC($_wbn)
 	_Console($_time & ' ' & StringReplace($_text, $_wbs, $_wbs & '  ' & @TAB))
 	Sleep(1000)
 
-	; eable mouse and keyboard
-	BlockInput(0)
-
 	; set next coordinate web browser
 	If $_wbn = 'Chrome' Then $wbx += 7
 	$wbx += 100
@@ -136,7 +130,7 @@ Func _Resolution()
 	RunWait($_exe & ' -monitor="\\.\DISPLAY1" -depth=max -refresh=max -width=' & $_w & ' -height=' & $_h)
 	If @DesktopWidth < $_w Or @DesktopHeight < $_h Then
 		$_text = '01. 디스플레이 해상도 = ' & $_w & ' x ' & $_h & ' 이상' & @CRLF & @CRLF
-		$_text &= '02. 원격 데스크톱 (MSTSC) 접속 설정 확인' & @CRLF & @CRLF
+		$_text &= '02. 원격 데스크톱(MSTSC) 접속 설정 확인' & @CRLF & @CRLF
 		$_text &= '옵션 표시 >> 디스플레이 >> 디스플레이 구성 = ' & $_w & ' x ' & $_h & ' 픽셀 이상'
 		$_msg = MsgBox(0, @ScriptName, $_text)
 		Exit
