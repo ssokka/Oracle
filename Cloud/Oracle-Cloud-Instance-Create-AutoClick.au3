@@ -1,5 +1,5 @@
 ; [필독] 오라클 클라우드 인스턴스 생성 자동 클릭 스크립트 : https://sjva.me/bbs/board.php?bo_table=tip&wr_id=251
-; [참고] 오라클 클라우드 인스턴스 생성 (완전 분리형) : https://sjva.me/bbs/board.php?bo_table=tip&wr_id=253
+; [필독] 오라클 클라우드 인스턴스 생성 (완전 분리형) : https://sjva.me/bbs/board.php?bo_table=tip&wr_id=253
 ; [링크] 오라클 클라우드 로그인 : https://www.oracle.com/cloud/sign-in.html
 
 Opt('WinTitleMatchMode', 3)
