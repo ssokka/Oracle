@@ -4,18 +4,18 @@
 
 Opt('WinTitleMatchMode', 3)
 
-; 단축키
+; set hotkey
 $paused = False
 HotKeySet('{PAUSE}', '_HotKey')		; 스크립트 일시 중지 / 다시 시작 단축키
 HotKeySet('!{PAUSE}', '_HotKey')	; 스크립트 종료 단축키
 
 While 1
-	$x = 0
+	$wbx = 0
 	_OCICAC('Chrome')
 	_OCICAC('Whale')
 	_OCICAC('Edge')
 	_OCICAC('Slimjet')
-	$i = 8
+	$i = 7
 	While 1
 		_ToolTip('Wait ' & $i)
 		If $i = 0 Then ExitLoop
@@ -26,13 +26,12 @@ WEnd
 
 Func _OCICAC($_wbn)
 	Local $_wbt = ' - ' & $_wbn, $_w = 825, $_h = 991
-
-	If $_wbn = 'Edge' Then $_wbt = ''
-	If $_wbn = 'Chrome' Then $x = -7
+	If $_wbn = 'Chrome' Then $wbx += -7
 	If $_wbn = 'Whale' Then
 		$_w -= 14
 		$_h -= 7
 	EndIf
+	If $_wbn = 'Edge' Then $_wbt = ''
 
 	; set control class
 	$_cn = 'Chrome_RenderWidgetHostHWND1'
@@ -50,6 +49,9 @@ Func _OCICAC($_wbn)
 	$_text = $_wbs
 	_ToolTip($_text)
 
+	; disable mouse and keyboard
+	BlockInput(1)
+
 	; undoes web browser maximization
 	If BitAND(WinGetState($_whd), 32) Then
 		$_check = WinSetState($_whd, '', @SW_RESTORE)
@@ -59,9 +61,9 @@ Func _OCICAC($_wbn)
 	EndIf
 
 	; resizes web browser
-	$_wpos = WinGetPos($_whd)
-	If $_wpos[2] <> $_w And $_wpos[3] <> $_h Then
-		$_check = WinMove($_whd, '', $x, 0, $_w, $_h, 1)
+	$_wbp = WinGetPos($_whd)
+	If ($_wbp[2] <> $_w And $_wbp[3] <> $_h) Or ($_wbp[0] <> $wbx) Then
+		$_check = WinMove($_whd, '', $wbx, 0, $_w, $_h, 1)
 		If $_check Then $_check = 1
 		$_text &= @CRLF & 'WinMove ' & $_check
 		_ToolTip($_text)
@@ -96,11 +98,14 @@ Func _OCICAC($_wbn)
 	$_text &= @CRLF & 'CreateClick ' & $_check
 	_ToolTip($_text)
 	_Console($_time & ' ' & StringReplace($_text, $_wbs, $_wbs & '  ' & @TAB))
-	Sleep(500)
+	Sleep(1000)
+
+	; eable mouse and keyboard
+	BlockInput(0)
 
 	; set next coordinate web browser
-	If $x = -7 Then $x = 0
-	$x += 100
+	If $_wbn = 'Chrome' Then $wbx += 7
+	$wbx += 100
 EndFunc
 
 Func _ToolTip($_text)
@@ -126,14 +131,14 @@ EndFunc
 
 Func _Resolution()
 	Local $_exe = 'dc.exe', $_w = 1280, $_h = 1024
-	If @DesktopWidth = $_w And @DesktopHeight = $_h Then Return
+	If @DesktopWidth >= $_w And @DesktopHeight >= $_h Then Return
 	If Not FileExists($_exe) Then InetGet('https://github.com/ssokka/Windows/raw/master/tools/dc.exe', $_exe, 1)
 	RunWait($_exe & ' -monitor="\\.\DISPLAY1" -depth=max -refresh=max -width=' & $_w & ' -height=' & $_h)
-	If @DesktopWidth <> $_w Or @DesktopHeight <> $_h Then
-		$_text = '확인 01. 디스플레이 해상도 = ' & $_w & ' x ' & $_h & @CRLF & @CRLF
-		$_text &= '확인 02. 원격 데스크톱 (MSTSC) 접속 설정' & @CRLF & @CRLF
-		$_text &= '옵션 표시 >> 디스플레이 >> 디스플레이 구성 = ' & $_w & ' x ' & $_h & ' 픽셀' & @CRLF & @CRLF
-		$_text &= '확인 후 이 스크립트를 다시 시작하시기 바랍니다.' & @CRLF
+	If @DesktopWidth < $_w Or @DesktopHeight < $_h Then
+		$_text = '01. 디스플레이 해상도 = ' & $_w & ' x ' & $_h & ' 이상' & @CRLF & @CRLF
+		$_text &= '02. 원격 데스크톱 (MSTSC) 접속 설정 확인' & @CRLF & @CRLF
+		$_text &= '    옵션 표시 >> 디스플레이 >> 디스플레이 구성 = ' & $_w & ' x ' & $_h & ' 픽셀 이상' & @CRLF & @CRLF
+		$_text &= '확인 후 이 스크립트를 다시 실행하시기 바랍니다.' & @CRLF
 		$_msg = MsgBox(0, @ScriptName, $_text)
 		Exit
 	EndIf
