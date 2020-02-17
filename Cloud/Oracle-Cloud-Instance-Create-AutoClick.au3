@@ -27,7 +27,6 @@ While 1
 WEnd
 
 Func _OCCIC($_wbn)
-
 	Local $_wbt = ' - ' & $_wbn, $_w = 825, $_h = 991
 
 	If $_wbn = 'Edge' Then $_wbt = ''
@@ -95,7 +94,6 @@ Func _OCCIC($_wbn)
 
 	If $x = -7 Then $x = 0
 	$x += 100
-
 EndFunc
 
 Func _ToolTip($_text)
