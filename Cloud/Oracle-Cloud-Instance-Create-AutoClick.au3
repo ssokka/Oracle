@@ -1,16 +1,12 @@
-; [오라클-클라우드] 인스턴스 생성 자동 클릭 스크립트 : https://sjva.me/bbs/board.php?bo_table=tip&wr_id=251
-; 반드시 위 사이트 확인 후 실행하시기 바랍니다.
-; 오라클 클라우드 로그인 : https://www.oracle.com/cloud/sign-in.html
+; [필독] 오라클 클라우드 인스턴스 생성 자동 클릭 스크립트 : https://sjva.me/bbs/board.php?bo_table=tip&wr_id=251
+; [참고] 오라클 클라우드 완전히 분리된 인스턴스 생성 : https://sjva.me/bbs/board.php?bo_table=tip&wr_id=253
+; [링크] 오라클 클라우드 로그인 : https://www.oracle.com/cloud/sign-in.html
 
 Opt('WinTitleMatchMode', 3)
 
-$exe = 'dc.exe'
-If Not FileExists($exe) Then InetGet('https://github.com/ssokka/Windows/raw/master/tools/dc.exe', $exe, 1)
-RunWait($exe & ' -monitor="\\.\DISPLAY1" -depth=max -refresh=max -width=1280 -height=1024')
-
 $paused = False
-HotKeySet('{PAUSE}', '_HotKey')
-HotKeySet('!{PAUSE}', '_HotKey')
+HotKeySet('{PAUSE}', '_HotKey')		; 스크립트 일시중지/시작 단축키
+HotKeySet('!{PAUSE}', '_HotKey')	; 스크립트 종료 단축키
 
 $MoveTop = 1
 
@@ -46,6 +42,8 @@ Func _OCCIC($_wbn)
 
 	$_whd = WinGetHandle('Oracle Cloud Infrastructure' & $_wbt)
 	If @error Then Return
+
+	_Resolution()
 
 	$_time = '[' & @YEAR & '-' & @MON & '-' & @MDAY & ' ' & @HOUR & ':' & @MIN & ':' & @SEC & ':' & @MSEC & ']'
 	$_wbs = $_wbn & ' 1'
@@ -119,4 +117,19 @@ Func _HotKey()
 		Case '!{PAUSE}'
 			Exit
 	EndSwitch
+EndFunc
+
+Func _Resolution()
+	Local $_exe = 'dc.exe', $_w = 1280, $_h = 1024
+	If @DesktopWidth = $_w And @DesktopHeight = $_h Then Return
+	If Not FileExists($_exe) Then InetGet('https://github.com/ssokka/Windows/raw/master/tools/dc.exe', $_exe, 1)
+	RunWait($_exe & ' -monitor="\\.\DISPLAY1" -depth=max -refresh=max -width=' & $_w & ' -height=' & $_h)
+	If @DesktopWidth <> $_w Or @DesktopHeight <> $_h Then
+		$_text = '확인 01. 디스플레이 해상도 = ' & $_w & ' x ' & $_h & @CRLF & @CRLF
+		$_text &= '확인 02. 원격 데스크톱 (MSTSC) 접속 설정' & @CRLF & @CRLF
+		$_text &= '옵션 표시 >> 디스플레이 >> 디스플레이 구성 = ' & $_w & ' x ' & $_h & ' 픽셀' & @CRLF & @CRLF
+		$_text &= '확인 후 이 스크립트를 다시 시작하시기 바랍니다.' & @CRLF
+		$_msg = MsgBox(0, @ScriptName, $_text)
+		Exit
+	EndIf
 EndFunc
