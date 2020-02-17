@@ -74,6 +74,7 @@ Func _OCCIC($_wbn)
 	If $MoveTop Then
 		$_check = 0
 		$_check1 = ControlClick($_whd, '', $_cn, 'left', 1, 5, 400)
+		Sleep(250)
 		$_check2 = ControlSend($_whd, '', $_cn, '{HOME}')
 		If $_check1 And $_check2 Then $_check = 1
 		$_text &= @CRLF & 'MoveTop ' & $_check
