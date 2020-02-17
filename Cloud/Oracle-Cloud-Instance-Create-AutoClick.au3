@@ -135,9 +135,9 @@ Func _Resolution()
 	If Not FileExists($_exe) Then InetGet('https://github.com/ssokka/Windows/raw/master/tools/dc.exe', $_exe, 1)
 	RunWait($_exe & ' -monitor="\\.\DISPLAY1" -depth=max -refresh=max -width=' & $_w & ' -height=' & $_h)
 	If @DesktopWidth < $_w Or @DesktopHeight < $_h Then
-		$_text = '01. 디스플레이 해상도 = ' & $_w & ' x ' & $_h & ' 이상 설정' & @CRLF & @CRLF
+		$_text = '01. 디스플레이 해상도 = ' & $_w & ' x ' & $_h & ' 이상' & @CRLF & @CRLF
 		$_text &= '02. 원격 데스크톱 (MSTSC) 접속 설정 확인' & @CRLF & @CRLF
-		$_text &= '옵션 표시 >> 디스플레이 >> 디스플레이 구성 = ' & $_w & ' x ' & $_h & ' 픽셀 이상 설정'
+		$_text &= '옵션 표시 >> 디스플레이 >> 디스플레이 구성 = ' & $_w & ' x ' & $_h & ' 픽셀 이상'
 		$_msg = MsgBox(0, @ScriptName, $_text)
 		Exit
 	EndIf
