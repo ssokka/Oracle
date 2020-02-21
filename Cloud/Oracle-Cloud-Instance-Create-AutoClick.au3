@@ -15,7 +15,7 @@ While 1
 	_OCICAC('Whale')
 	_OCICAC('Edge')
 	_OCICAC('Slimjet')
-	$i = 7
+	$i = 5
 	While 1
 		_ToolTip('Wait ' & $i)
 		If $i = 0 Then ExitLoop
@@ -95,7 +95,7 @@ Func _OCICAC($_wbn)
 	$_text &= @CRLF & 'CreateClick ' & $_check
 	_ToolTip($_text)
 	_Console($_time & ' ' & StringReplace($_text, $_wbs, $_wbs & '  ' & @TAB))
-	Sleep(1000)
+	Sleep(500)
 
 	; set next coordinate web browser
 	If $_wbn = 'Chrome' Then $wbx += 7
