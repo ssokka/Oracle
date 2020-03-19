@@ -2,6 +2,11 @@
 
 ### 오라클 클라우드 Ubuntu 18.04 Minimal 기본 설정 
 
+FILE=~/.default_setting
+if [ -f "$FILE" ]; then
+    exit
+fi
+
 echo '### Swap File 생성 / 설정'
 sudo fallocate -l 4G /swapfile
 sudo chmod 600 /swapfile
@@ -49,3 +54,5 @@ echo
 #sudo apt install unzip -y
 #curl https://rclone.org/install.sh | sudo bash
 #echo
+
+touch "$FILE"
